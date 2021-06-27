@@ -7,8 +7,9 @@ on:
 
 env:
   DOCKER_IMAGE: craft-nginx
-  K8S-NAMESPACE: craft-actions
-  K8S-DEPLOYMENT: ct-nginx
+  K8S_NAMESPACE: craft-actions
+  K8S_DEPLOYMENT: ct-nginx
+  REPOSITORY: lucasblanco/craft-nginx
 
 jobs:
   docker:
@@ -42,4 +43,4 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Deploy 
-        run: kubectl set image deployment $K8S-DEPLOYMENT -n $K8S-NAMESPACE $K8S-DEPLOYMENT=lucasblanco/craft-nginx:${{ github.sha }}
+        run: kubectl set image deployment $K8S_DEPLOYMENT -n $K8S_NAMESPACE $K8S_DEPLOYMENT=$REPOSITORY:${{ github.sha }}
