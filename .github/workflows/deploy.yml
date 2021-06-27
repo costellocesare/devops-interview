@@ -5,6 +5,11 @@ on:
     branches:
       - 'master'
 
+env:
+  DOCKER_IMAGE: craft-nginx
+  K8S-NAMESPACE: craft-actions
+  K8S-DEPLOYMENT: ct-nginx
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -30,3 +35,11 @@ jobs:
           context: ./Prueba3/
           push: true
           tags: lucasblanco/craft-nginx:latest, lucasblanco/craft-nginx:${{ github.sha }}
+      
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Deploy 
+        run: kubectl set image deployment $K8S-DEPLOYMENT -n $K8S-NAMESPACE $K8S-DEPLOYMENT=lucasblanco/craft-nginx:${{ github.sha }}
