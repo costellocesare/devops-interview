@@ -10,6 +10,7 @@ env:
   K8S_NAMESPACE: craft-actions
   K8S_DEPLOYMENT: ct-nginx
   REPOSITORY: lucasblanco/craft-nginx
+  KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
 jobs:
   docker:
@@ -40,6 +41,7 @@ jobs:
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Deploy 
