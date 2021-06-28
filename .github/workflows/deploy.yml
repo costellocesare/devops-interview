@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'master'
+    paths:
+      - 'Prueba3/nginx/**'
 
 env:
   DOCKER_IMAGE: craft-nginx
@@ -37,12 +39,3 @@ jobs:
           context: ./Prueba3/
           push: true
           tags: lucasblanco/craft-nginx:latest, lucasblanco/craft-nginx:${{ github.sha }}
-      
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          config: ${{ secrets.KUBE_CONFIG_DATA }}
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-      - name: Deploy 
-        run: kubectl set image deployment $K8S_DEPLOYMENT -n $K8S_NAMESPACE $K8S_DEPLOYMENT=$REPOSITORY:${{ github.sha }}
