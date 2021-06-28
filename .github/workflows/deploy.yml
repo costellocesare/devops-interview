@@ -36,6 +36,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./Prueba3/
+          context: ./Prueba3/nginx/
           push: true
           tags: lucasblanco/craft-nginx:latest, lucasblanco/craft-nginx:${{ github.sha }}
