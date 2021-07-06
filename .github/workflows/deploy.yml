@@ -3,7 +3,7 @@ name: Deploy NGINX
 on:
   push:
     branches:
-      - 'master'
+      - 'dev'
     paths:
       - 'Prueba3/**'
 
@@ -12,7 +12,6 @@ env:
   K8S_NAMESPACE: craft-actions
   K8S_DEPLOYMENT: ct-nginx
   REPOSITORY: lucasblanco/craft-nginx
-  KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
 jobs:
   docker:
@@ -39,3 +38,15 @@ jobs:
           context: ./Prueba3/
           push: true
           tags: lucasblanco/craft-nginx:latest, lucasblanco/craft-nginx:${{ github.sha }}
+  
+  deploy-to-cluster:
+    name: deploy to cluster
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@master
+    - name: deploy to cluster
+      uses: steebchen/kubectl@v2.0.0
+      with:
+        config: ${{ secrets.KUBE_CONFIG_DATA}}
+        commands: set image --record deployment/nginx container=$REPOSITORY:latest
