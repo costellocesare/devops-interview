@@ -42,11 +42,11 @@ jobs:
   deploy-to-cluster:
     name: deploy to cluster
     runs-on: ubuntu-latest
-    
+    needs: docker
     steps:
     - uses: actions/checkout@master
     - name: deploy to cluster
       uses: steebchen/kubectl@v2.0.0
       with:
         config: ${{ secrets.KUBE_CONFIG_DATA}}
-        commands: set image --record deployment/nginx container=$REPOSITORY:latest
+        commands: -n dev set image --record deployment/nginx container=lucasblanco/craft-nginx:latest
