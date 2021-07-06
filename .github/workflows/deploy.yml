@@ -43,7 +43,8 @@ jobs:
       uses: steebchen/kubectl@v2.0.0
       with:
         config: ${{ secrets.KUBE_CONFIG_DATA }}
-        command: -n dev set image deployment/nginx nginx=lucasblanco/craft-nginx:latest
+        command: -n dev set image deployment/nginx nginx=lucasblanco/craft-nginx:${{ github.sha }}
+
     - name: verify deployment
       uses: steebchen/kubectl@v2.0.0
       with:
